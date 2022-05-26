@@ -5,13 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.islam.pureApp.R
+import com.islam.pureApp.common.PureApp
 import com.islam.pureApp.databinding.ActivityMainBinding
-import com.islam.pureApp.di.PureAppModule
+import com.islam.pureApp.di.AppContainer
 import com.islam.pureApp.presentation.viewmodel.MainViewModel
-import com.islam.pureApp.presentation.viewmodel.MainViewModelFactory
 
 private const val TAG = "MainActivity"
 
@@ -20,17 +21,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
         get() = ActivityMainBinding::inflate
 
+    private lateinit var appContainer: AppContainer
     private lateinit var viewModel: MainViewModel
-    val useCase = PureAppModule().useCase
 
     override fun setupOnCreate() {
-        viewModel = ViewModelProvider(
-            this,
-            MainViewModelFactory(useCase)
-        )[MainViewModel::class.java]
-
+        appContainer = (application as PureApp).appContainer
+        val viewModelFactory = appContainer.viewModelFactory
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         observeData()
-
     }
 
     private fun observeData() {

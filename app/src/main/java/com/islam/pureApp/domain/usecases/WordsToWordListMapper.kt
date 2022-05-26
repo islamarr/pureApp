@@ -12,7 +12,7 @@ class WordsToWordListMapper {
         val listOfWords = arrayListOf<Word>()
         val resMap = mutableMapOf<String, Int>()
         text.trim().split(" ").forEach { word ->
-            if (word.isNotEmpty()) {
+            if (word.isNotEmpty() && word.isNotBlank()) {
                 val key = regex.replace(word, "")
                 resMap[key] = resMap[word]?.plus(1) ?: 1
             }

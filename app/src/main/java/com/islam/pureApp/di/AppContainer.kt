@@ -5,10 +5,15 @@ import com.islam.pureApp.data.remote.datasource.GetWordsRemoteDataSourceImpl
 import com.islam.pureApp.data.remote.repositories.GetWordsRepositoryImpl
 import com.islam.pureApp.domain.usecases.MapWordsToWordListUseCase
 import com.islam.pureApp.domain.usecases.WordsToWordListMapper
+import com.islam.pureApp.presentation.viewmodel.MainViewModelFactory
 
-class PureAppModule {
+class AppContainer {
 
-    val useCase: MapWordsToWordListUseCase by lazy {
+    val viewModelFactory : MainViewModelFactory by lazy {
+        MainViewModelFactory(useCase)
+    }
+
+    private val useCase: MapWordsToWordListUseCase by lazy {
         MapWordsToWordListUseCase(repository, wordsToWordListMapper)
     }
 

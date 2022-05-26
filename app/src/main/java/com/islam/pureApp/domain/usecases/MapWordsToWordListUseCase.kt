@@ -7,7 +7,6 @@ class MapWordsToWordListUseCase(
     private val repository: GetWordsRepository,
     private val wordsToWordListMapper: WordsToWordListMapper
 ) {
-
     fun execute(): List<Word> {
         val allWords = repository.getWords()
         return wordsToWordListMapper.map(allWords)
