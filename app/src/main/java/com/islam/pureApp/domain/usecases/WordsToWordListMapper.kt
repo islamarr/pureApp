@@ -26,7 +26,6 @@ class WordsToWordListMapper {
                 )
             )
         }
-        Log.d("list", listOfWords.toString())
         return listOfWords
     }
 }

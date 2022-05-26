@@ -8,8 +8,8 @@ import com.islam.pureApp.domain.usecases.WordsToWordListMapper
 
 class GetWordsRepositoryImpl(private val getWordsRemoteDataSource: GetWordsRemoteDataSource) :
     GetWordsRepository {
-    override fun getWordList(): String {
-        return when (val res = getWordsRemoteDataSource.getWordList()) {
+    override fun getWords(): String {
+        return when (val res = getWordsRemoteDataSource.getWordsResponse()) {
             is NetworkResponse.Failure -> res.reason!!
             is NetworkResponse.Success -> {
                 res.data!!

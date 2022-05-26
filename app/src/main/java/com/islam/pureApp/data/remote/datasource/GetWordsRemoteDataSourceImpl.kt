@@ -5,7 +5,7 @@ import com.islam.pureApp.data.remote.api.NetworkResponse
 import com.islam.pureApp.data.remote.api.Response
 
 class GetWordsRemoteDataSourceImpl(private val apiService: ApiService) : GetWordsRemoteDataSource {
-    override fun getWordList(): NetworkResponse<String> {
+    override fun getWordsResponse(): NetworkResponse<String> {
 
         return when (val networkResult = apiService.getAllWords()) {
             is Response.Success -> {
