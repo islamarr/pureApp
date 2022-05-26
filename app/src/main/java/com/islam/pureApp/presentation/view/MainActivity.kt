@@ -5,13 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.islam.pureApp.R
 import com.islam.pureApp.common.PureApp
 import com.islam.pureApp.databinding.ActivityMainBinding
 import com.islam.pureApp.di.AppContainer
+import com.islam.pureApp.presentation.view.adapter.WordListAdapter
 import com.islam.pureApp.presentation.viewmodel.MainViewModel
 
 private const val TAG = "MainActivity"
@@ -23,21 +23,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private lateinit var appContainer: AppContainer
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: WordListAdapter
 
     override fun setupOnCreate() {
         appContainer = (application as PureApp).appContainer
         val viewModelFactory = appContainer.viewModelFactory
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         observeData()
+        initRecyclerView()
     }
 
     private fun observeData() {
         viewModel.wordsList.observe(this) {
             it?.let {
-                for (i in 0..10) {
-                    Log.d(TAG, "observeData: ${it[i].text}  ${it[i].count}")
-                }
+                adapter.submitList(it)
             }
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.wordsList.let {
+            adapter = WordListAdapter()
+            it.adapter = adapter
         }
     }
 

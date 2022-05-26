@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseActivity<viewBinding : ViewBinding> : AppCompatActivity() {
 
     private var _binding: viewBinding? = null
-    private val binding: viewBinding
+    val binding: viewBinding
         get() {
             return _binding ?: throw IllegalStateException(
                 "data binding should not be requested before onCreate is called"
