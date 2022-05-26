@@ -7,7 +7,6 @@ sealed class NetworkResponse<T> {
     ) : NetworkResponse<T>()
 
     data class Failure<T>(
-        val httpCode: Int,
         val reason: String? = null,
     ) : NetworkResponse<T>()
 }

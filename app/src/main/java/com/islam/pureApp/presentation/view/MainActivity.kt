@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import com.islam.pureApp.R
 import com.islam.pureApp.databinding.ActivityMainBinding
+import com.islam.pureApp.di.PureAppModule
+import com.islam.pureApp.presentation.viewmodel.MainViewModel
+import com.islam.pureApp.presentation.viewmodel.MainViewModelFactory
 
 private const val TAG = "MainActivity"
 
@@ -16,8 +20,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
         get() = ActivityMainBinding::inflate
 
+    private lateinit var viewModel: MainViewModel
+    val useCase = PureAppModule().useCase
+
     override fun setupOnCreate() {
-        Log.d(TAG, "setupOnCreate")
+        viewModel = ViewModelProvider(
+            this,
+            MainViewModelFactory(useCase)
+        )[MainViewModel::class.java]
+
+        observeData()
+
+    }
+
+    private fun observeData() {
+        viewModel.wordsList.observe(this) {
+            it?.let {
+                for (i in 0..10) {
+                    Log.d(TAG, "observeData: ${it[i].text}  ${it[i].count}")
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
