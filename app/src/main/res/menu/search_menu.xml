@@ -6,7 +6,7 @@
         android:id="@+id/startSearch"
         android:icon="@drawable/ic_search"
         android:orderInCategory="1"
-        android:title="@string/searchWord"
+        android:title="@string/search_hint"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
 
