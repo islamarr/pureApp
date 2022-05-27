@@ -3,57 +3,56 @@ package com.islam.pureApp.presentation.view
 import android.app.SearchManager
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.islam.pureApp.R
 import com.islam.pureApp.common.PureApp
 import com.islam.pureApp.common.gone
 import com.islam.pureApp.common.visible
 import com.islam.pureApp.databinding.ActivityMainBinding
-import com.islam.pureApp.di.AppContainer
 import com.islam.pureApp.presentation.view.adapter.WordListAdapter
 import com.islam.pureApp.presentation.viewmodel.MainViewModel
 import com.islam.pureApp.presentation.viewmodel.SortType
-
-private const val TAG = "MainActivity"
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
         get() = ActivityMainBinding::inflate
 
-    private lateinit var appContainer: AppContainer
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: WordListAdapter
 
     override fun setupOnCreate() {
-        appContainer = (application as PureApp).appContainer
-        val viewModelFactory = appContainer.viewModelFactory
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        initViewModel()
         initRecyclerView()
         observeData()
+    }
+
+    private fun initViewModel() {
+        val appContainer = (application as PureApp).appContainer
+        val viewModelFactory = appContainer.viewModelFactory
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
 
     private fun observeData() {
         binding.loading.visible()
         viewModel.wordsList.observe(this) {
             it?.let {
-                if (it.isEmpty()) {
-                    binding.wordsList.gone()
-                    binding.noWordsText.visible()
-                } else {
-                    binding.wordsList.visible()
-                    binding.noWordsText.gone()
-                    adapter.submitList(it)
-                    scrollToTop()
-                }
+                setVisibility(it.isEmpty())
+                adapter.submitList(it)
+                if (it.isNotEmpty()) scrollToTop()
                 binding.loading.gone()
             }
         }
+    }
+
+    private fun setVisibility(isListEmpty: Boolean) {
+        binding.wordsList.isVisible = !isListEmpty
+        binding.emptyListText.isVisible = isListEmpty
     }
 
     private fun scrollToTop() {
@@ -71,14 +70,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
-
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         val searchView: SearchView =
             menu?.findItem(R.id.startSearch)?.actionView as SearchView
         searchView.queryHint = resources.getString(R.string.search_hint)
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        setSearchListener(searchView)
 
+        return true
+    }
+
+    private fun setSearchListener(searchView: SearchView) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -96,7 +99,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             searchView.onActionViewCollapsed()
             true
         }
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

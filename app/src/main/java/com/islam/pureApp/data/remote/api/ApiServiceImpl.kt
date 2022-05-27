@@ -12,26 +12,26 @@ class ApiServiceImpl : ApiService {
     override fun getAllWords(): Response<String> {
 
         var reader: BufferedReader? = null
+        var resCode: Int
+
         return try {
-
             val url = URL(BuildConfig.BASE_URL)
-            val httpURLConnection = url.openConnection() as HttpURLConnection
-            httpURLConnection.requestMethod = "GET"
-            httpURLConnection.setRequestProperty("Content-Type", "application/json")
-            httpURLConnection.setRequestProperty("Accept", "application/json")
-            httpURLConnection.doInput = true
-            httpURLConnection.doOutput = true
-            val responseCode = httpURLConnection.responseCode
-            val sb = StringBuilder()
-            reader = BufferedReader(InputStreamReader(httpURLConnection.inputStream))
-
-            var line: String?
-
-            while (reader.readLine().also { line = it } != null) {
-                sb.append(line + "\n")
+            (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                setRequestProperty("Content-Type", "application/json")
+                setRequestProperty("Accept", "application/json")
+                reader = BufferedReader(InputStreamReader(inputStream))
+                resCode = responseCode
             }
 
-            return Response.Success(responseCode, sb.toString())
+            val builder = StringBuilder()
+            var line: String?
+            while (reader?.readLine().also { line = it } != null) {
+                builder.append(line + "\n")
+            }
+
+            return Response.Success(resCode, builder.toString())
+
         } catch (e: Throwable) {
             when (e) {
                 is IOException -> {
@@ -47,15 +47,15 @@ class ApiServiceImpl : ApiService {
 
 
         } finally {
-            if (reader != null) {
+            reader?.let {
                 try {
-                    reader.close()
+                    it.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
             }
         }
-    }
 
+    }
 
 }

@@ -2,6 +2,7 @@ package com.islam.pureApp.data.db.datasource
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
 import com.islam.pureApp.data.db.WordDbHelper
 import com.islam.pureApp.data.db.WordEntry
@@ -15,14 +16,24 @@ class GetWordsLocalDataSourceImpl(context: Context) : GetWordsLocalDataSource {
         val updatedList = ArrayList<Word>()
 
         val db = wordDbHelper.readableDatabase
-        val projection = arrayOf(
+        val columns = arrayOf(
             BaseColumns._ID,
             WordEntry.COLUMN_Word_TEXT,
             WordEntry.COLUMN_WORD_COUNT
         )
 
+        startCursor(db, columns, updatedList)
+
+        return updatedList
+    }
+
+    private fun startCursor(
+        db: SQLiteDatabase,
+        columns: Array<String>,
+        updatedList: ArrayList<Word>
+    ) {
         val cursor =
-            db.query(WordEntry.TABLE_NAME, projection, null, null, null, null, null)
+            db.query(WordEntry.TABLE_NAME, columns, null, null, null, null, null)
 
         with(cursor) {
             while (moveToNext()) {
@@ -35,8 +46,6 @@ class GetWordsLocalDataSourceImpl(context: Context) : GetWordsLocalDataSource {
             }
         }
         cursor.close()
-
-        return updatedList
     }
 
     override fun insertAllWords(words: List<Word>) {

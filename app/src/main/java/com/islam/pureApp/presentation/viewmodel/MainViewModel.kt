@@ -63,7 +63,6 @@ class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel(
 
 }
 
-
 enum class SortType {
     DEFAULT, ASCEND, DESCEND
 }

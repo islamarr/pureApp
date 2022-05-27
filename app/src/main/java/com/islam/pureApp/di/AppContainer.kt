@@ -1,6 +1,5 @@
 package com.islam.pureApp.di
 
-import android.app.Application
 import android.content.Context
 import com.islam.pureApp.data.db.datasource.GetWordsLocalDataSource
 import com.islam.pureApp.data.db.datasource.GetWordsLocalDataSourceImpl
@@ -13,7 +12,7 @@ import com.islam.pureApp.presentation.viewmodel.MainViewModelFactory
 
 class AppContainer(private val applicationContext: Context) {
 
-    val viewModelFactory : MainViewModelFactory by lazy {
+    val viewModelFactory: MainViewModelFactory by lazy {
         MainViewModelFactory(useCase)
     }
 
