@@ -42,8 +42,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.loading.visible()
         viewModel.wordsList.observe(this) {
             it?.let {
-                adapter.submitList(it)
-                scrollToTop()
+                if (it.isEmpty()) {
+                    binding.wordsList.gone()
+                    binding.noWordsText.visible()
+                } else {
+                    binding.wordsList.visible()
+                    binding.noWordsText.gone()
+                    adapter.submitList(it)
+                    scrollToTop()
+                }
                 binding.loading.gone()
             }
         }
