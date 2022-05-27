@@ -12,7 +12,7 @@ class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel(
     val wordsList get() = _wordsList
 
     var currentSortType = SortType.DEFAULT
-    var sortedList: List<Word> = listOf()
+    private var sortedList: List<Word> = listOf()
 
     init {
         loadWordList()
