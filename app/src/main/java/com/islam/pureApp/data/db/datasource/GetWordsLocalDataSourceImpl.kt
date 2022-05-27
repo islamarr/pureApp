@@ -49,20 +49,20 @@ class GetWordsLocalDataSourceImpl(context: Context) : GetWordsLocalDataSource {
     }
 
     override fun insertAllWords(words: List<Word>) {
-        words.forEach {
-            insertWord(it)
-        }
-    }
-
-    private fun insertWord(word: Word) {
-        val values = ContentValues().apply {
-            put(WordEntry.COLUMN_Word_TEXT, word.text)
-            put(WordEntry.COLUMN_WORD_COUNT, word.count)
-        }
-
-        wordDbHelper.writableDatabase.apply {
-            insert(WordEntry.TABLE_NAME, null, values)
-            close()
+        val db = wordDbHelper.writableDatabase
+        try {
+            db.apply {
+                beginTransaction()
+                val values = ContentValues()
+                words.forEach { word ->
+                    values.put(WordEntry.COLUMN_Word_TEXT, word.text)
+                    values.put(WordEntry.COLUMN_WORD_COUNT, word.count)
+                    insert(WordEntry.TABLE_NAME, null, values)
+                }
+                db.setTransactionSuccessful()
+            }
+        } finally {
+            db.endTransaction()
         }
     }
 
