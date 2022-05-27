@@ -74,14 +74,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-
-                Log.d(TAG, "onQueryTextSubmit: ")
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
-                Log.d(TAG, "onQueryTextChange: ")
+                newText?.let {
+                    viewModel.searchInList(it)
+                }
                 return true
             }
         })
@@ -94,11 +93,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
-            R.id.startSearch -> {
-                Log.d(TAG, "start Search")
-            }
             R.id.sortList -> {
                 val sortType =
                     if (viewModel.currentSortType == SortType.ASCEND) SortType.DESCEND else SortType.ASCEND

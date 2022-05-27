@@ -1,31 +1,32 @@
 package com.islam.pureApp.domain.usecases
 
-import android.util.Log
 import com.islam.pureApp.domain.entites.Word
 import org.jsoup.Jsoup
 
 class WordsToWordListMapper {
+
     private val regex = "[^A-Za-z]".toRegex()
+    private val wordList = arrayListOf<Word>()
+    private val wordWithCountMap = mutableMapOf<String, Int>()
 
     fun map(body: String): List<Word> {
         val text = Jsoup.parse(body).body().text()
-        val listOfWords = arrayListOf<Word>()
-        val resMap = mutableMapOf<String, Int>()
         text.trim().split(" ").forEach { word ->
             if (word.isNotEmpty() && word.isNotBlank()) {
                 val key = regex.replace(word, "")
-                resMap[key] = resMap[word]?.plus(1) ?: 1
+                wordWithCountMap[key] = wordWithCountMap[word]?.plus(1) ?: 1
             }
         }
 
-        resMap.onEachIndexed { index, entry ->
-            listOfWords.add(
+        wordWithCountMap.onEachIndexed { index, entry ->
+            wordList.add(
                 Word(
                     id = index, text = entry.key,
                     count = entry.value
                 )
             )
         }
-        return listOfWords
+
+        return wordList
     }
 }

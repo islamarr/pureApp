@@ -21,8 +21,8 @@ class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel(
     private fun loadWordList() {
         Executors.newSingleThreadScheduledExecutor().let {
             it.execute {
-                val list = useCase.execute()
-                _wordsList.postValue(list)
+                sortedList = useCase.execute()
+                _wordsList.postValue(sortedList)
                 it.shutdown()
             }
         }
@@ -45,8 +45,22 @@ class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel(
             }
             _wordsList.postValue(sortedList)
         }
-
     }
+
+    fun searchInList(query: String) {
+        if (query.isEmpty()) {
+            _wordsList.postValue(sortedList)
+            return
+        }
+
+        sortedList.let { list ->
+            val filteredList = list.filter { word ->
+                word.text.equals(query, ignoreCase = true)
+            }
+            _wordsList.postValue(filteredList)
+        }
+    }
+
 }
 
 
