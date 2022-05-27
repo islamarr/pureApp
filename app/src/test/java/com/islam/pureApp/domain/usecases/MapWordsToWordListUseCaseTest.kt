@@ -28,7 +28,7 @@ class MapWordsToWordListUseCaseTest {
     }
 
     @Test
-    fun `when repository return LocalWordList result then wordList`() {
+    fun `when repository return LocalWordList result then return the wordList`() {
         val result = WrapperDataResult.LocalWordList(listOf())
         `when`(repository.getWords()).thenReturn(result)
 
@@ -39,7 +39,7 @@ class MapWordsToWordListUseCaseTest {
     }
 
     @Test
-    fun `when repository return RemoteWords result then wordList`() {
+    fun `when repository return RemoteWords result then return the wordList`() {
         val body = "<html>word</html>"
         val expected = listOf(Word(1, "word", 3))
         val result = WrapperDataResult.RemoteWords(body)

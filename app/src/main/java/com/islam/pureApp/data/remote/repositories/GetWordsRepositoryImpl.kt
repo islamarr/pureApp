@@ -8,13 +8,13 @@ import com.islam.pureApp.domain.entites.Word
 import com.islam.pureApp.domain.repositories.GetWordsRepository
 
 class GetWordsRepositoryImpl(
-    private val getWordsRemoteDataSource: GetWordsRemoteDataSource,
+    private val remoteDataSource: GetWordsRemoteDataSource,
     private val localDataSource: GetWordsLocalDataSource
 ) :
     GetWordsRepository {
 
     override fun getWords(): WrapperDataResult {
-        return when (val res = getWordsRemoteDataSource.getWordsResponse()) {
+        return when (val res = remoteDataSource.getWordsResponse()) {
             is NetworkResponse.Failure -> WrapperDataResult.LocalWordList(localDataSource.getAllWords())
             is NetworkResponse.Success -> {
                 res.data?.let {
