@@ -1,6 +1,8 @@
 package com.islam.pureApp.presentation.view
 
 import android.app.SearchManager
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,10 +11,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.islam.pureApp.R
 import com.islam.pureApp.common.PureApp
+import com.islam.pureApp.common.gone
+import com.islam.pureApp.common.visible
 import com.islam.pureApp.databinding.ActivityMainBinding
 import com.islam.pureApp.di.AppContainer
 import com.islam.pureApp.presentation.view.adapter.WordListAdapter
 import com.islam.pureApp.presentation.viewmodel.MainViewModel
+import com.islam.pureApp.presentation.viewmodel.SortType
 
 private const val TAG = "MainActivity"
 
@@ -29,16 +34,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         appContainer = (application as PureApp).appContainer
         val viewModelFactory = appContainer.viewModelFactory
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        observeData()
         initRecyclerView()
+        observeData()
     }
 
     private fun observeData() {
+        binding.loading.visible()
         viewModel.wordsList.observe(this) {
             it?.let {
                 adapter.submitList(it)
+                scrollToTop()
+                binding.loading.gone()
             }
         }
+    }
+
+    private fun scrollToTop() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.wordsList.scrollToPosition(0)
+        }, 500)
     }
 
     private fun initRecyclerView() {
@@ -86,11 +100,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 Log.d(TAG, "start Search")
             }
             R.id.sortList -> {
-                Log.d(TAG, "Sort List")
-
+                val sortType =
+                    if (viewModel.currentSortType == SortType.ASCEND) SortType.DESCEND else SortType.ASCEND
+                viewModel.sortList(sortType)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
 }
+
+
