@@ -5,7 +5,7 @@
 Description
 --------------
 
-- List of the words fetched from HTML Response grouped together with search and sorting options.
+- List of the words fetched and parsed from HTML Response grouped together, with search and sorting asc/desc options.
 - Response is Cached in locale database.
 - Not allowed to use any 3rd party libraries for networking, threading, database.
 
@@ -17,7 +17,7 @@ Tech Stack
 * Clean Architecture.
 * Standard Coding Style.
 * SOLID principles.
-* Unit testing with test coverage round 100% for dataSources, repositories, useCases , mappers and viewModels.
+* Unit testing with test coverage round 100% for dataSources, repositories, useCases, mappers and viewModels.
 * UI testing using Espresso for checking all views, searching and sorting.
 * SQLite, Manual dependency Injection (Service locator pattern) and Executors.
 * Obfuscation and Code shrinking.
