@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.islam.pureApp.R
+import com.islam.pureApp.common.EspressoIdlingResource
 import com.islam.pureApp.common.PureApp
 import com.islam.pureApp.common.gone
 import com.islam.pureApp.common.visible
@@ -41,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun loadList() {
+        EspressoIdlingResource.increment()
         Executors.newSingleThreadExecutor().let {
             it.execute {
                 viewModel.loadWordList()
@@ -57,6 +59,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 adapter.submitList(it)
                 if (it.isNotEmpty()) scrollToTop()
                 binding.loading.gone()
+                EspressoIdlingResource.decrement()
             }
         }
     }
