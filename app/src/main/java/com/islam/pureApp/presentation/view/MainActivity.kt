@@ -17,6 +17,7 @@ import com.islam.pureApp.databinding.ActivityMainBinding
 import com.islam.pureApp.presentation.view.adapter.WordListAdapter
 import com.islam.pureApp.presentation.viewmodel.MainViewModel
 import com.islam.pureApp.presentation.viewmodel.SortType
+import java.util.concurrent.Executors
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun setupOnCreate() {
         initViewModel()
+        loadList()
         initRecyclerView()
         observeData()
     }
@@ -36,6 +38,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         val appContainer = (application as PureApp).appContainer
         val viewModelFactory = appContainer.viewModelFactory
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+
+    private fun loadList() {
+        Executors.newSingleThreadExecutor().let {
+            it.execute {
+                viewModel.loadWordList()
+                it.shutdown()
+            }
+        }
     }
 
     private fun observeData() {

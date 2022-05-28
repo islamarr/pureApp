@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.islam.pureApp.domain.entites.Word
 import com.islam.pureApp.domain.usecases.MapWordsToWordListUseCase
-import java.util.concurrent.Executors
 
 class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel() {
 
@@ -14,19 +13,10 @@ class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel(
     var currentSortType = SortType.DEFAULT
     private var sortedList: List<Word> = listOf()
 
-    init {
-        loadWordList()
-    }
 
     fun loadWordList() {
-        Executors.newSingleThreadExecutor().let {
-            it.execute {
-                sortedList = useCase.execute()
-                _wordsList.postValue(sortedList)
-                it.shutdown()
-            }
-        }
-
+        sortedList = useCase.execute()
+        _wordsList.postValue(sortedList)
     }
 
     fun sortList(sortType: SortType) {

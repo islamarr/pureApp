@@ -4,8 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.islam.pureApp.domain.entites.Word
 import com.islam.pureApp.domain.usecases.MapWordsToWordListUseCase
 import com.islam.pureApp.getOrAwaitValue
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,7 +28,10 @@ class MainViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         viewModel = MainViewModel(useCase)
+        loadList()
+    }
 
+    private fun loadList() {
         list = listOf(Word(1, "word", 3), Word(2, "word2", 1), Word(3, "word3", 5))
         Mockito.`when`(useCase.execute()).thenReturn(list)
         viewModel.loadWordList()
