@@ -72,6 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         Handler(Looper.getMainLooper()).postDelayed({
             binding.wordsList.scrollToPosition(0)
             EspressoIdlingResource.decrement()
+            EspressoIdlingResource.decrement()
         }, 500)
     }
 
@@ -118,6 +119,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sortList -> {
+                EspressoIdlingResource.increment()
                 val sortType =
                     if (viewModel.currentSortType == SortType.ASCEND) SortType.DESCEND else SortType.ASCEND
                 viewModel.sortList(sortType)
