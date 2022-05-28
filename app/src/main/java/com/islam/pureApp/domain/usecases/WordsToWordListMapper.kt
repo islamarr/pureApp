@@ -12,7 +12,7 @@ class WordsToWordListMapper {
             .filter { it.any { char -> char.isLetterOrDigit() } }
             .groupingBy { it }
             .eachCount()
-            .map { it }
+            .entries
             .mapIndexed { index, textCount -> Word(index + 1, textCount.key, textCount.value) }
     }
 
