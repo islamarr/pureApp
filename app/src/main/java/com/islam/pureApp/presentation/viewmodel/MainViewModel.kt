@@ -18,7 +18,7 @@ class MainViewModel(private val useCase: MapWordsToWordListUseCase) : ViewModel(
         loadWordList()
     }
 
-    private fun loadWordList() {
+    fun loadWordList() {
         Executors.newSingleThreadExecutor().let {
             it.execute {
                 sortedList = useCase.execute()
