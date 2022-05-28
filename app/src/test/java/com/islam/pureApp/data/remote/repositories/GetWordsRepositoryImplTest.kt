@@ -29,7 +29,7 @@ class GetWordsRepositoryImplTest {
     }
 
     @Test
-    fun `when get words from remote service successfully return Result from remote`(){
+    fun `when get words from remote service successfully return Result from remote`() {
         val response = "word"
         val networkResponse = NetworkResponse.Success(response)
         Mockito.`when`(remoteDataSource.getWordsResponse()).thenReturn(networkResponse)
@@ -41,7 +41,7 @@ class GetWordsRepositoryImplTest {
     }
 
     @Test
-    fun `when remote response is null return Result from local`(){
+    fun `when remote response is null return Result from local`() {
         val result = listOf<Word>()
         val networkResponse = NetworkResponse.Success<String>(null)
         Mockito.`when`(remoteDataSource.getWordsResponse()).thenReturn(networkResponse)
@@ -54,13 +54,13 @@ class GetWordsRepositoryImplTest {
     }
 
     @Test
-    fun `when remote response is failure return Result from local`(){
+    fun `when remote response is failure return Result from local`() {
         val result = listOf<Word>()
         val networkResponse = NetworkResponse.Failure<String>("")
         Mockito.`when`(remoteDataSource.getWordsResponse()).thenReturn(networkResponse)
         Mockito.`when`(localDataSource.getAllWords()).thenReturn(result)
 
-        val expected =WrapperDataResult.LocalWordList(result)
+        val expected = WrapperDataResult.LocalWordList(result)
         val actual = repository.getWords()
 
         Assert.assertEquals(actual, expected)

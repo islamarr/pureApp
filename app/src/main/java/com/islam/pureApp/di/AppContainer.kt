@@ -20,16 +20,16 @@ class AppContainer(private val applicationContext: Context) {
         MapWordsToWordListUseCase(repository, wordsToWordListMapper)
     }
 
-    private val localDataSource: GetWordsLocalDataSource by lazy {
-        GetWordsLocalDataSourceImpl(applicationContext)
+    private val wordsToWordListMapper: WordsToWordListMapper by lazy {
+        WordsToWordListMapper()
     }
 
     private val repository: GetWordsRepositoryImpl by lazy {
         GetWordsRepositoryImpl(remoteDataSource, localDataSource)
     }
 
-    private val wordsToWordListMapper: WordsToWordListMapper by lazy {
-        WordsToWordListMapper()
+    private val localDataSource: GetWordsLocalDataSource by lazy {
+        GetWordsLocalDataSourceImpl(applicationContext)
     }
 
     private val remoteDataSource: GetWordsRemoteDataSourceImpl by lazy {

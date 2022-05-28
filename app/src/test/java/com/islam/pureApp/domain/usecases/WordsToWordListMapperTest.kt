@@ -1,9 +1,7 @@
 package com.islam.pureApp.domain.usecases
 
 import com.islam.pureApp.domain.entites.Word
-import org.junit.Assert.*
-
-import org.junit.Before
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class WordsToWordListMapperTest {

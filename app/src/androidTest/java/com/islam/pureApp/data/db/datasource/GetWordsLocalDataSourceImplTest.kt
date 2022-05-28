@@ -2,12 +2,10 @@ package com.islam.pureApp.data.db.datasource
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.islam.pureApp.domain.entites.Word
-import junit.framework.TestCase
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
-import org.junit.Assert.*
-
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 

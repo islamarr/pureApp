@@ -3,9 +3,7 @@ package com.islam.pureApp.data.remote.datasource
 import com.islam.pureApp.data.remote.api.ApiService
 import com.islam.pureApp.data.remote.api.NetworkResponse
 import com.islam.pureApp.data.remote.api.Response
-import com.islam.pureApp.getOrAwaitValue
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -26,7 +24,7 @@ class GetWordsRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when response is success return the right NetworkResponse`(){
+    fun `when response is success return the right NetworkResponse`() {
         val networkResponse = Response.Success(200, "response")
         Mockito.`when`(apiService.getAllWords()).thenReturn(networkResponse)
 
@@ -37,7 +35,7 @@ class GetWordsRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when response has Error return Failure NetworkResponse with error message`(){
+    fun `when response has Error return Failure NetworkResponse with error message`() {
         val networkResponse = Response.Error(400, "error")
         Mockito.`when`(apiService.getAllWords()).thenReturn(networkResponse)
 
@@ -48,7 +46,7 @@ class GetWordsRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when response has EmptyError return Failure NetworkResponse with empty message`(){
+    fun `when response has EmptyError return Failure NetworkResponse with empty message`() {
         val networkResponse = Response.EmptyError
         Mockito.`when`(apiService.getAllWords()).thenReturn(networkResponse)
 
@@ -59,7 +57,7 @@ class GetWordsRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when response has NetworkError return Failure NetworkResponse with null message`(){
+    fun `when response has NetworkError return Failure NetworkResponse with null message`() {
         val networkResponse = Response.NetworkError
         Mockito.`when`(apiService.getAllWords()).thenReturn(networkResponse)
 

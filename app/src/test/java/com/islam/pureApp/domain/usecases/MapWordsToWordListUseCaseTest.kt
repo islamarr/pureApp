@@ -3,12 +3,11 @@ package com.islam.pureApp.domain.usecases
 import com.islam.pureApp.domain.WrapperDataResult
 import com.islam.pureApp.domain.entites.Word
 import com.islam.pureApp.domain.repositories.GetWordsRepository
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class MapWordsToWordListUseCaseTest {
@@ -19,7 +18,7 @@ class MapWordsToWordListUseCaseTest {
     @Mock
     private lateinit var repository: GetWordsRepository
 
-    private lateinit var useCase : MapWordsToWordListUseCase
+    private lateinit var useCase: MapWordsToWordListUseCase
 
     @Before
     fun setUp() {

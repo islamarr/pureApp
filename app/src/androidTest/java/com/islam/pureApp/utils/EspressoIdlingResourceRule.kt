@@ -8,7 +8,6 @@ import org.junit.runner.Description
 
 class EspressoIdlingResourceRule : TestWatcher() {
 
-
     private val idlingResource = EspressoIdlingResource.countingIdlingResource
 
     override fun finished(description: Description?) {
