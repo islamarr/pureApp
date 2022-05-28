@@ -6,4 +6,5 @@ interface GetWordsLocalDataSource {
     fun getAllWords(): List<Word>
     fun insertAllWords(words: List<Word>)
     fun clearAll()
+    fun closeDB()
 }

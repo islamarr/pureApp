@@ -73,4 +73,8 @@ class GetWordsLocalDataSourceImpl(context: Context) : GetWordsLocalDataSource {
         }
     }
 
+    override fun closeDB() {
+        wordDbHelper.close()
+    }
+
 }
