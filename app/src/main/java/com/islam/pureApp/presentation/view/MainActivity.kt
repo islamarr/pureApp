@@ -59,7 +59,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 adapter.submitList(it)
                 if (it.isNotEmpty()) scrollToTop()
                 binding.loading.gone()
-                EspressoIdlingResource.decrement()
             }
         }
     }
@@ -72,6 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun scrollToTop() {
         Handler(Looper.getMainLooper()).postDelayed({
             binding.wordsList.scrollToPosition(0)
+            EspressoIdlingResource.decrement()
         }, 500)
     }
 

@@ -1,8 +1,7 @@
 package com.islam.pureApp.presentation.view
 
-import android.os.Bundle
 import android.view.KeyEvent
-import androidx.test.core.app.ActivityScenario
+import android.widget.EditText
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
@@ -12,20 +11,27 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.islam.pureApp.R
 import com.islam.pureApp.utils.EspressoIdlingResourceRule
-import org.junit.Assert.*
-import org.junit.Before
+import com.islam.pureApp.utils.atPosition
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class MainActivityTest{
+class MainActivityTest {
 
     @get:Rule
     val activityTestRule = ActivityScenarioRule(MainActivity::class.java)
 
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
+
+    @Test
+    fun checkToolbarIcons_Displayed() {
+        Espresso.onView(withId(R.id.startSearch))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.sortList))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
 
     @Test
     fun checkWordsListContainer_Displayed() {
@@ -40,25 +46,48 @@ class MainActivityTest{
     }
 
     @Test
-    fun checkToolbarIcons_Displayed() {
-        Espresso.onView(withId(R.id.startSearch))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(withId(R.id.sortList))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
-
-   /* @Test
-    fun test_search_view() {
-
-        Espresso.onView(withId(R.id.startSearch))
-            .perform(ViewActions.click())
-
-        Espresso.onView(withId(androidx.appcompat.R.id.search_src_text)).perform(
-            ViewActions.typeText("app"),
+    fun searchForWord_Exist() {
+        val query = "details"
+        Espresso.onView(withId(R.id.startSearch)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.isAssignableFrom(EditText::class.java)).perform(
+            ViewActions.typeText(query),
             ViewActions.pressKey(KeyEvent.KEYCODE_ENTER)
         )
-        Espresso.onView(withId(R.id.wordsList)).check(withItemCount(1))
+        Espresso.onView(withId(R.id.wordsList)).check(
+            ViewAssertions.matches(
+                atPosition(
+                    0,
+                    ViewMatchers.hasDescendant(ViewMatchers.withText(query))
+                )
+            )
+        )
+    }
 
-    }*/
+    @Test
+    fun sortList_ASCEND() {
+        Espresso.onView(withId(R.id.sortList)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.wordsList)).check(
+            ViewAssertions.matches(
+                atPosition(
+                    0,
+                    ViewMatchers.hasDescendant(ViewMatchers.withText("1"))
+                )
+            )
+        )
+    }
+
+    @Test
+    fun sortList_DESC() {
+        Espresso.onView(withId(R.id.sortList)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.sortList)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.wordsList)).check(
+            ViewAssertions.matches(
+                atPosition(
+                    0,
+                    ViewMatchers.hasDescendant(ViewMatchers.withText("and"))
+                )
+            )
+        )
+    }
 
 }
